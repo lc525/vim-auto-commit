@@ -5,12 +5,13 @@
 ## Example
 
 ```vim
-autocmd BufWritePost */path/* call AutoCommit()
+autocmd BufWritePost dev.log call AutoCommit()
 ```
 
 ## Author
 
 © 2014 Tom Vincent <http://tlvince.com/contact>
+© 2021 Lucian Carata <http://lucian.muxray.com/>
 
 ## License
 

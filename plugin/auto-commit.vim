@@ -1,9 +1,14 @@
 function! AutoCommit()
-  call system('git rev-parse --git-dir > /dev/null 2>&1')
+  let git_dir = system("git rev-parse --show-toplevel | tr -d '\\n'")
   if v:shell_error
     return
   endif
-  let message = 'Updated ' . expand('%:.')
-  call system('git add ' . expand('%:p'))
-  call system('git commit -m ' . shellescape(message, 1))
+  
+  let last_commit = system("git log --oneline --format=%B | head -n 1 | tr -d '\\n'")
+  let current_log = system("tail -n1 " . git_dir . "/dev.log | grep '^-' | sed 's/^-\\s*/WIP: /' | tr -d '\\n'")
+  if last_commit ==# current_log
+    call system('git commit --amend -a --no-edit')
+  else
+    call system('git commit -a -m ' . shellescape(current_log, 1))
+  endif
 endfun
